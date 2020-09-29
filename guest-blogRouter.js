@@ -42,7 +42,7 @@ router.get('/:id', function (request, response) {
 //CREATE new guest_blogpost
 
 router.get("/create-blogpost", function (request, response) {
-    response.render("create-blogpost.hbs")
+    response.render("create-guestBlogpost.hbs")
 })
 
 router.post("/create-blogpost", function (request, response) {
@@ -56,7 +56,7 @@ router.post("/create-blogpost", function (request, response) {
             console.log(error)
         }
         else {
-            response.redirect("/blogs")
+            response.redirect("/guestblog")
         }
     })
 
