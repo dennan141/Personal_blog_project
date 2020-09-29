@@ -23,18 +23,18 @@ router.get("/", function(request, response){
 router.get('/:id', function (request, response) {
     const id = request.params.id
 
-    const blog = db.getGuestBlogById(id, function(error, blogposts){
+    const blog = db.getGuestBlogById(id, function(error, guestblogposts){
         if(error){
             //Do something
             console.log(error)
         }
         else{
             const model = {
-                blogposts
+                guestblogposts
             }
-            console.log(blogposts)
+            console.log(guestblogposts)
             
-            response.render("blog.hbs", model)
+            response.render("guestBlog.hbs", model)
         }
     })
 })
