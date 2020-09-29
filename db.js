@@ -114,3 +114,12 @@ exports.deleteGuestBlogpost = function(id, callback){
                 callback(error)
         })
 }
+
+exports.createNewGuestBlogpost = function(title,content, description, name, callback){
+        const query = "INSERT INTO guestblogposts (guest_title, guest_content, guest_description, guest_name) VALUES (?,?,?,?)"
+        const values = [title, content, description, name]
+
+        db.run(query, values, function(error){
+                callback(error)
+        })
+}
