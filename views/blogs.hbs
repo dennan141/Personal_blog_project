@@ -1,0 +1,27 @@
+<h1 class="text-center">BLOGS</h1>
+
+<a href="/blogs/create-blogpost" class="btn btn-primary">Create new Blogpost</a>
+
+<div class="container-fluid">
+    <div class="col">
+        {{#if blogposts.length}}
+            {{#each blogposts}}
+                <div class="col sm-6 my-5">
+                    <div class="card text-center card w-100" style="width: 20rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{title}}</h5>
+                            <p class="card-text">
+                                {{description}}
+                            </p>
+                                <a href="/blogs/{{id}}" class="btn btn-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        {{else}}
+            <p>This is wrong</p>
+        {{/if}}
+    </div>
+</div>
+
+
