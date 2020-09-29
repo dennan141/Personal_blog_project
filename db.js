@@ -105,3 +105,12 @@ exports.getGuestBlogById = function (id, callback) {
                 callback(error, guestblogposts)
         })
 }
+
+exports.deleteGuestBlogpost = function(id, callback){
+        const query = "DELETE FROM guestblogposts WHERE id = ?"
+        const values = [id]
+
+        db.run(query,values,function(error){
+                callback(error)
+        })
+}

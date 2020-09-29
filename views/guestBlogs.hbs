@@ -1,11 +1,22 @@
-<h1 class="text-center">BLOGS</h1>
+<!DOCTYPE html>
+<html lang="en">
 
-<a href="/blogs/create" class="btn btn-primary">Create new Blogpost</a>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest-Blog</title>
+</head>
 
-<div class="container-fluid">
-    <div class="col">
-        {{#if guestblogposts.length}}
-            {{#each guestblogposts}}
+<body>
+    <h1 class="text-center">Guest Blogs</h1>
+
+    <a href="/blogs/create" class="btn btn-primary">Create new Blogpost</a>
+
+    <main>
+        <div class="container-fluid">
+            <div class="col">
+                {{#if guestblogposts.length}}
+                {{#each guestblogposts}}
                 <div class="col sm-6 my-5">
                     <div class="card text-center card w-100" style="width: 20rem;">
                         <div class="card-body">
@@ -13,14 +24,18 @@
                             <p class="card-text">
                                 {{guest_description}}
                             </p>
-                                <a href="/guestblog/{{id}}" class="btn btn-primary">Read More</a>
+                            <a href="/guestblog/{{id}}" class="btn btn-primary">Read More</a>
                         </div>
                     </div>
                 </div>
-            {{/each}}
-        {{else}}
-            <p>This is wrong</p>
-        {{/if}}
-    </div>
-</div>
+                {{/each}}
+                {{else}}
+                <p>There are currently no guestblogposts avalible. Feel free to make one!</p>
+                {{/if}}
+            </div>
+        </div>
+    </main>
 
+</body>
+
+</html>

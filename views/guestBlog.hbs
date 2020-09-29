@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{guestblogposts.title}}</title>
 </head>
+
 <body>
     <main class="container mt-5">
         <h1 class="text-center">{{guestblogposts.guest_title}}</h1>
         <p class="text-center">{{guestblogposts.guest_content}}</p>
     </main>
     <footer class="container mb-5">
-        <form action="" method="post">
+        <form action="/guestblog/delete-guestblog/{{guestblogposts.id}}" method="POST">
             <div class="text-center">Will be hidden later</div>
-            <button type="submit">Update</button>
             <button type="submit">Delete</button>
         </form>
     </footer>
 </body>
-</html>
 
+</html>

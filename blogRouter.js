@@ -69,9 +69,9 @@ router.get('/:id', function (request, response) {
 router.post("/delete-blogpost/:id", function (request, response) {
     const id = request.params.id
 
-    db.deleteBlogpost(id, function (error) {
+    db.deleteGuestBlogpost(id, function (error) {
         if (error) {
-
+            console.log(error)
         }
         else {
             response.redirect("/blogs")

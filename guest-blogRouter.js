@@ -39,8 +39,41 @@ router.get('/:id', function (request, response) {
     })
 })
 
-//CREATE new blogpost
+//CREATE new guest_blogpost
 
+router.get("/create-blogpost", function (request, response) {
+    response.render("create-blogpost.hbs")
+})
 
+router.post("/create-blogpost", function (request, response) {
+    const title = request.body.title
+    const content = request.body.content
+    const description = request.body.description
+
+    db.createNewBlogpost(title, content, description, function (error) {
+        if (error) {
+            //Do something
+            console.log(error)
+        }
+        else {
+            response.redirect("/blogs")
+        }
+    })
+
+})
+
+//POST DELETE spec guest_blogpost
+router.post("/delete-guestblog/:id", function (request, response) {
+    const id = request.params.id
+
+    db.deleteGuestBlogpost(id, function (error) {
+        if (error) {
+            console.log(error)
+        }
+        else {
+            response.redirect("/guestblog")
+        }
+    })
+})
 
 module.exports = router
