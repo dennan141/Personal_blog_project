@@ -13,11 +13,10 @@
         <p class="text-center">{{blogposts.content}}</p>
     </main>
     <footer class="container mb-5">
-        <form action="" method="post">
             <div class="text-center">Will be hidden later</div>
-            <button type="submit">Update</button>
-            <button type="submit">Delete</button>
-        </form>
+            <form action="/blogs/delete-blogpost/{{blogposts.id}}" method="POST">
+                <button type="submit">Delete</button>
+            </form>    
     </footer>
 </body>
 

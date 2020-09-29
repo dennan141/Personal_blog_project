@@ -59,6 +59,16 @@ exports.createNewBlogpost = function(title,content, description, callback){
         })
 }
 
+exports.deleteBlogpost = function(id, callback){
+        const query = "DELETE FROM blogposts WHERE id = ?"
+        const values = [id]
+
+        db.run(query,values,function(error){
+                callback(error)
+        })
+}
+
+
 //Portfolio
 exports.getAllProjects = function (callback) {
         const query = "SELECT * from portfolio"

@@ -32,8 +32,8 @@ router.post("/create-blogpost", function (request, response) {
     const title = request.body.title
     const content = request.body.content
     const description = request.body.description
-    
-    db.createNewBlogpost(title,content,description, function(error){
+
+    db.createNewBlogpost(title, content, description, function (error) {
         if (error) {
             //Do something
             console.log(error)
@@ -64,5 +64,19 @@ router.get('/:id', function (request, response) {
     })
 })
 
+
+//POST DELETE spec blogpost
+router.post("/delete-blogpost/:id", function (request, response) {
+    const id = request.params.id
+
+    db.deleteBlogpost(id, function (error) {
+        if (error) {
+
+        }
+        else {
+            response.redirect("/blogs")
+        }
+    })
+})
 
 module.exports = router
