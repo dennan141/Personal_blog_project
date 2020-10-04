@@ -23,6 +23,11 @@ router.get('/', function (request, response) {
     })
 })
 
+router.get("/create-project", function (request, response) {
+    response.render("create-project.hbs")
+})
+
+
 //GET spec project
 router.get('/:id', function (request, response) {
     const id = request.params.id
@@ -38,6 +43,25 @@ router.get('/:id', function (request, response) {
             response.render("project.hbs", model)
         }
     })
+})
+
+
+//POST CREATE new project
+router.post("/create-project", function (request, response) {
+    const title = request.body.title
+    const content = request.body.content
+    const description = request.body.description
+
+    db.createNewProject(title, content, description, function (error) {
+        if (error) {
+            //Do something
+            console.log(error)
+        }
+        else {
+            response.redirect("/portfolio")
+        }
+    })
+
 })
 
 //POST DELETE spec project

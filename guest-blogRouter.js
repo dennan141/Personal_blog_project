@@ -47,7 +47,6 @@ router.get('/:id', function (request, response) {
 //CREATE new guest_blogpost
 
 
-
 router.post("/create-blogpost", function (request, response) {
     const title = request.body.title
     const content = request.body.content

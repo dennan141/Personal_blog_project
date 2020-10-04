@@ -71,7 +71,7 @@ exports.deleteBlogpost = function (id, callback) {
 
 //Portfolio
 exports.getAllProjects = function (callback) {
-        const query = "SELECT * from portfolio"
+        const query = "SELECT * from portfolio ORDER BY id DESC"
 
         db.all(query, function (error, portfolio) {
                 callback(error, portfolio)
@@ -88,6 +88,15 @@ exports.getProjectById = function (id, callback) {
         })
 }
 
+exports.createNewProject = function (title, content, description, callback) {
+        const query = "INSERT INTO portfolio (title, content, description) VALUES (?,?,?)"
+        const values = [title, content, description]
+
+        db.run(query, values, function (error) {
+                callback(error)
+        })
+}
+
 exports.deleteProject = function (id, callback) {
         const query = "DELETE FROM portfolio WHERE id = ?"
         const values = [id]
@@ -99,7 +108,7 @@ exports.deleteProject = function (id, callback) {
 
 //Guest blogs
 exports.getAllGuestBlogs = function (callback) {
-        const query = "SELECT * from guestblogposts"
+        const query = "SELECT * from guestblogposts ORDER BY id DESC"
 
         db.all(query, function (error, guestblogposts) {
                 callback(error, guestblogposts)
