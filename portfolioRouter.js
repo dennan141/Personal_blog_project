@@ -40,5 +40,19 @@ router.get('/:id', function (request, response) {
     })
 })
 
+//POST DELETE spec project
+router.post("/delete-project/:id", function (request, response) {
+    const id = request.params.id
+
+    db.deleteProject(id, function (error) {
+        if (error) {
+            console.log(error)
+        }
+        else {
+            response.redirect("/portfolio")
+        }
+    })
+})
+
 
 module.exports = router

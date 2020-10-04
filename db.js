@@ -50,20 +50,20 @@ exports.getBlogById = function (id, callback) {
         })
 }
 
-exports.createNewBlogpost = function(title,content, description, callback){
+exports.createNewBlogpost = function (title, content, description, callback) {
         const query = "INSERT INTO blogposts (title, content, description) VALUES (?,?,?)"
         const values = [title, content, description]
 
-        db.run(query, values, function(error){
+        db.run(query, values, function (error) {
                 callback(error)
         })
 }
 
-exports.deleteBlogpost = function(id, callback){
+exports.deleteBlogpost = function (id, callback) {
         const query = "DELETE FROM blogposts WHERE id = ?"
         const values = [id]
 
-        db.run(query,values,function(error){
+        db.run(query, values, function (error) {
                 callback(error)
         })
 }
@@ -88,6 +88,15 @@ exports.getProjectById = function (id, callback) {
         })
 }
 
+exports.deleteProject = function (id, callback) {
+        const query = "DELETE FROM portfolio WHERE id = ?"
+        const values = [id]
+
+        db.run(query, values, function (error) {
+                callback(error)
+        })
+}
+
 //Guest blogs
 exports.getAllGuestBlogs = function (callback) {
         const query = "SELECT * from guestblogposts"
@@ -106,20 +115,20 @@ exports.getGuestBlogById = function (id, callback) {
         })
 }
 
-exports.deleteGuestBlogpost = function(id, callback){
+exports.deleteGuestBlogpost = function (id, callback) {
         const query = "DELETE FROM guestblogposts WHERE id = ?"
         const values = [id]
 
-        db.run(query,values,function(error){
+        db.run(query, values, function (error) {
                 callback(error)
         })
 }
 
-exports.createNewGuestBlogpost = function(title,content, description, name, callback){
+exports.createNewGuestBlogpost = function (title, content, description, name, callback) {
         const query = "INSERT INTO guestblogposts (guest_title, guest_content, guest_description, guest_name) VALUES (?,?,?,?)"
         const values = [title, content, description, name]
 
-        db.run(query, values, function(error){
+        db.run(query, values, function (error) {
                 callback(error)
         })
 }
