@@ -22,8 +22,22 @@ router.get("/", function (request, response) {
     })
 })
 
-//CREATE new blogpost
+//GET UPDATE blogpost
+router.get("/update-blogpost/:id", function (request, response) {
+    const id = request.params.id
+    db.getBlogById(id, function(error, blogpost){
+        if(error){
+            //Do something
+            console.log(error)
+        }
+        else{
+            const model = blogpost
+            response.render("update-blogpost.hbs", model)
+        }
+    })
+})
 
+//CREATE new blogpost
 router.get("/create-blogpost", function (request, response) {
     response.render("create-blogpost.hbs")
 })
@@ -49,7 +63,7 @@ router.post("/create-blogpost", function (request, response) {
 //GET spec Blogposts
 router.get('/:id', function (request, response) {
     const id = request.params.id
-
+    
     const blog = db.getBlogById(id, function (error, blogposts) {
         if (error) {
             //Do something
@@ -79,4 +93,21 @@ router.post("/delete-blogpost/:id", function (request, response) {
     })
 })
 
+//POST UPDATE spec blogpost
+router.post("/update-blogpost/:id", function (request, response) {
+    const id = request.params.id
+    const title = request.body.title
+    const content = request.body.content
+    const description = request.body.description
+    db.updateBlogpost(id,title,content,description,function (error) {
+        if (error) {
+            console.log(error)
+        }
+        else {
+            response.redirect("/blogs/"+id)
+        }
+    })
+})
+
 module.exports = router
+

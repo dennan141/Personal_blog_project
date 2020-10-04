@@ -59,6 +59,15 @@ exports.createNewBlogpost = function (title, content, description, callback) {
         })
 }
 
+exports.updateBlogpost = function (id, title, content, description, callback) {
+        const query = "UPDATE blogposts SET title = ?, content = ?, description = ? WHERE id = ?"
+        const values = [title, content, description, id]
+
+        db.run(query, values, function (error) {
+                callback(error)
+        })
+}
+
 exports.deleteBlogpost = function (id, callback) {
         const query = "DELETE FROM blogposts WHERE id = ?"
         const values = [id]

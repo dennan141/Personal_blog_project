@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update {{blogposts.title}}</title>
+</head>
+
+<body>
+    <main class="containter mt-5 text-center">
+        <form action="" method="POST" action="/update-blogpost/"{{id}}>
+            <h1>Update </h1>
+            <div>
+                Title: <input type="text" name="title" value="{{title}}">
+            </div>
+            <div>
+                Content:<textarea name="content" name="content" cols="100" rows="20">{{content}}</textarea>
+                <div>
+                    Description<textarea name="description" cols="100" rows="5">{{description}}</textarea>
+                </div>
+            </div>
+            <input type="submit" value="Update Blogpost">
+        </form>
+    </main>
+</body>
+</html>
