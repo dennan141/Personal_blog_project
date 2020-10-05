@@ -19,10 +19,27 @@ router.get("/", function (request, response) {
     })
 })
 
+//GET UPDATE guestblog with id
+router.get("/update-guestblog/:id", function (request, response) {
+    const id = request.params.id
+    db.getGuestBlogById(id, function (error, guestblogpost) {
+        if (error) {
+            //Do something
+            console.log(error)
+        }
+        else {
+            const model = {
+                guestblogpost
+            }
+            response.render("update-guestblog.hbs", model)
+        }
+    })
+})
 
 router.get("/create-blogpost", function (request, response) {
     response.render("create-guestBlogpost.hbs")
 })
+
 
 
 //GET spec guest Blogposts
@@ -45,8 +62,6 @@ router.get('/:id', function (request, response) {
 })
 
 //CREATE new guest_blogpost
-
-
 router.post("/create-blogpost", function (request, response) {
     const title = request.body.title
     const content = request.body.content

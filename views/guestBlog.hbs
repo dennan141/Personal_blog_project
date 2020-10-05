@@ -12,11 +12,19 @@
         <h1 class="text-center">{{guestblogposts.guest_title}}</h1>
         <p class="text-center">{{guestblogposts.guest_content}}</p>
     </main>
+
     <footer class="container mb-5">
-        <form action="/guestblog/delete-guestblog/{{guestblogposts.id}}" method="POST">
-            <div class="text-center">Will be hidden later</div>
-            <button type="submit">Delete</button>
-        </form>
+        <div class="text-center">Will be hidden later</div>
+        <div>
+            <form action="/guestblog/delete-guestblog/{{guestblogposts.id}}" method="POST">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+        <div>
+            <form action="/guestblog/update-guestblog/{{guestblogposts.id}}" method="GET">
+                <button type="submit">Update</button>
+            </form>
+        </div>
     </footer>
 </body>
 
