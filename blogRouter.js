@@ -12,10 +12,11 @@ router.use(bodyParser.urlencoded({
     extended: false
 }))
 
+//Validation error checks-------------------
 function blogValidationErrorCheck(title,content,description) {
     const validationErrors = []
 
-    //Validation error checks-------------------
+    
     if (title.length <= 0) {
         validationErrors.push("Title is too short, please write a title!")
     }
@@ -56,12 +57,14 @@ router.get("/", function (request, response) {
 //GET UPDATE blogpost
 router.get("/update-blogpost/:id", function (request, response) {
     const id = request.params.id
+    
     db.getBlogById(id, function (error, blogpost) {
         if (error) {
             //Do something
             console.log(error)
         }
         else {
+            
             const model = blogpost
             response.render("update-blogpost.hbs", model)
         }
@@ -152,6 +155,7 @@ router.post("/update-blogpost/:id", function (request, response) {
             console.log(error)
         }
         else {
+            )
             response.redirect("/blogs/" + id)
         }
     })
