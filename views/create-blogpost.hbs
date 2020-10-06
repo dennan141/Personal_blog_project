@@ -14,15 +14,15 @@
         <form action="" method="POST">
             <h1>Create new Blogpost</h1>
             <div>
-                <input type="text" name="title" placeholder="Title" style="width: 20rem;">
+                <input type="text" name="title" placeholder="Title" style="width: 20rem;" value="{{title}}">
             </div>
             <div>
-                <textarea name="content" placeholder="Content" cols="100" rows="20"></textarea>
+                <textarea name="content" placeholder="Content" cols="100" rows="20" class="mt-1">{{content}}</textarea>
                 <div>
-                    <textarea name="description" placeholder="Description" cols="100" rows="5"></textarea>
+                    <textarea name="description" placeholder="Description" cols="100" rows="5">{{description}}</textarea>
                 </div>
             </div>
-            <input type="submit" value="Create Blogpost">
+            <input type="submit" value="Create Blogpost" class="mb-5">
         </form>
     </main>
 </body>
