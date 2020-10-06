@@ -28,9 +28,8 @@ router.get("/update-guestblog/:id", function (request, response) {
             console.log(error)
         }
         else {
-            const model = {
-                guestblogpost
-            }
+            const model = guestblogpost
+                
             response.render("update-guestblog.hbs", model)
         }
     })
