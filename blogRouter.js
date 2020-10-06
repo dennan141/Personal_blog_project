@@ -86,7 +86,6 @@ router.post("/create-blogpost", function (request, response) {
    const validationErrors = blogValidationErrorCheck(title,content,description)
 
     if(validationErrors == 0) {
-        //----------------------------------
     
         db.createNewBlogpost(title, content, description, function (error) {
             if (error) {

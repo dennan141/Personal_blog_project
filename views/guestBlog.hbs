@@ -8,10 +8,15 @@
 </head>
 
 <body>
-    <main class="container text-center mt-5">
-        <h1>{{guestblogposts.guest_title}}</h1>
-        <p>{{guestblogposts.guest_content}}</p>
-        <div class="mt-3">Author: {{guestblogposts.guest_name}}</div>
+
+        <main class="container text-center mt-5 mb-5" >
+        <div class="container mt-5">
+            <div class="card text-center card w-100" style="width: 20rem;">
+                <h1 class="text-center">{{guestblogposts.guest_title}}</h1>
+                <p class="text-center">{{guestblogposts.guest_content}}</p>
+                <div class="mt-3">Author: {{guestblogposts.guest_name}}</div>
+            </div>
+        </div>
     </main>
 
     <footer class="container mb-5 mt-5">

@@ -11,10 +11,14 @@
 <body>
     <main class="containter mt-5 text-center">
         <form action="" method="POST" action="/update-blogpost/"{{id}}>
-            <h1>Update {{guest_title}}</h1>
+            <h1>Update "{{guest_title}}"</h1>
             <strong>Title</strong>
             <div>
                 <input type="text" name="title" value="{{guest_title}}">
+            </div>
+            <strong>Name</strong>
+            <div>
+                <input type="text" name="name" value="{{guest_name}}">
             </div>
             <div class="mt-3"><strong>Content</strong> </div>
             <div>
