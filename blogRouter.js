@@ -3,9 +3,9 @@ const db = require("./db")
 const router = express.Router();
 const bodyParser = require('body-parser')
 
-const TITLE_MAX_LENGTH = 65
-const CONTENT_MAX_LENGTH = 2000
-const DESCRIPTION_MAX_LENGTH = 250
+const TITLE_MAX_LENGTH = 100
+const CONTENT_MAX_LENGTH = 4000
+const DESCRIPTION_MAX_LENGTH = 500
 
 router.use(express.static(__dirname + "/public"))
 router.use(bodyParser.urlencoded({
@@ -61,19 +61,19 @@ router.post("/create-blogpost", function (request, response) {
         validationErrors.push("Title is too short, please write a title!")
     }
     else if (title.length > TITLE_MAX_LENGTH) {
-        validationErrors.push("Title can only be 65 characters long, please shorten the title!")
+        validationErrors.push("Title can only be " + TITLE_MAX_LENGTH + " characters long, please shorten the title!")
     }
     if (content.length <= 0) {
         validationErrors.push("Content is too short, please write some content!")
     } 
     else if (content.length > CONTENT_MAX_LENGTH) {
-        validationErrors.push("Content can only be 2000 characters, please shorten the content!")
+        validationErrors.push("Content can only be " + CONTENT_MAX_LENGTH + " characters, please shorten the content!")
     }
     if (description.length <= 0) {
         validationErrors.push("Description is too short, please write a description!")
     }
     else if (description.length > DESCRIPTION_MAX_LENGTH) {
-        validationErrors.push("Description can only be 250 charcaters, please shorten the description!")
+        validationErrors.push("Description can only be " + DESCRIPTION_MAX_LENGTH + " charcaters, please shorten the description!")
     }
 
     if(validationErrors == 0) {
