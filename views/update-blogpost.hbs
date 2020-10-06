@@ -4,24 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update {{blogposts.title}}</title>
+    <title>Update {{title}}</title>
 </head>
 
 <body>
-    <main class="containter mt-5 text-center">
+    <main class="containter mt-5 text-center mb-5">
         <form action="" method="POST" action="/update-blogpost/"{{id}}>
-            <h1>Update </h1>
+            <h1>Update {{title}}</h1>
+            <strong>Title</strong>
             <div>
-                Title: <input type="text" name="title" value="{{title}}">
+                <input type="text" name="title" value="{{title}}">
             </div>
+            <div class="mt-3"><strong>Content</strong> </div>
             <div>
-                Content:<textarea name="content" name="content" cols="100" rows="20">{{content}}</textarea>
-                <div>
-                    Description<textarea name="description" cols="100" rows="5">{{description}}</textarea>
-                </div>
+                <textarea name="content" name="content" cols="100" rows="20">{{content}}</textarea>
             </div>
-            <input type="submit" value="Update Blogpost">
+            <div class="mt-3"><strong>Description</strong></div>
+            <div>
+                <textarea name="description" cols="100" rows="5">{{description}}</textarea>
+            </div>
+            <input class="mt-2" type="submit" value="Update Blogpost">
         </form>
     </main>
 </body>
+
 </html>

@@ -94,4 +94,21 @@ router.post("/delete-guestblog/:id", function (request, response) {
     })
 })
 
+//POST UPDATE spec guest blogpost
+router.post("/update-guestblog/:id", function (request, response) {
+    const id = request.params.id
+    const title = request.body.title
+    const content = request.body.content
+    const description = request.body.description
+    const name = request.body.name
+    db.updateGuestblogpost(id, title, content, description, name, function (error) {
+        if (error) {
+            console.log(error)
+        }
+        else {
+            response.redirect("/guestblog/" + id)
+        }
+    })
+})
+
 module.exports = router

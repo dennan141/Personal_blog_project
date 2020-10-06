@@ -150,3 +150,12 @@ exports.createNewGuestBlogpost = function (title, content, description, name, ca
                 callback(error)
         })
 }
+
+exports.updateGuestblogpost = function (id, title, content, description, name, callback) {
+        const query = "UPDATE guestblogposts SET guest_title = ?, guest_content = ?, guest_description = ?, guest_name = ? WHERE id = ?"
+        const values = [title, content, description, name, id]
+
+        db.run(query, values, function (error) {
+                callback(error)
+        })
+}
