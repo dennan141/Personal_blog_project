@@ -13,10 +13,10 @@ router.use(bodyParser.urlencoded({
 }))
 
 //Validation error checks-------------------
-function blogValidationErrorCheck(title,content,description) {
+function blogValidationErrorCheck(title, content, description) {
     const validationErrors = []
 
-    
+
     if (title.length <= 0) {
         validationErrors.push("Title is too short, please write a title!")
     }
@@ -25,7 +25,7 @@ function blogValidationErrorCheck(title,content,description) {
     }
     if (content.length <= 0) {
         validationErrors.push("Content is too short, please write some content!")
-    } 
+    }
     else if (content.length > CONTENT_MAX_LENGTH) {
         validationErrors.push("Content can only be " + CONTENT_MAX_LENGTH + " characters, please shorten the content!")
     }
@@ -57,14 +57,14 @@ router.get("/", function (request, response) {
 //GET UPDATE blogpost
 router.get("/update-blogpost/:id", function (request, response) {
     const id = request.params.id
-    
+
     db.getBlogById(id, function (error, blogpost) {
         if (error) {
             //Do something
             console.log(error)
         }
         else {
-            
+
             const model = blogpost
             response.render("update-blogpost.hbs", model)
         }
@@ -86,10 +86,10 @@ router.post("/create-blogpost", function (request, response) {
     const content = request.body.content
     const description = request.body.description
 
-   const validationErrors = blogValidationErrorCheck(title,content,description)
+    const validationErrors = blogValidationErrorCheck(title, content, description)
 
-    if(validationErrors == 0) {
-    
+    if (validationErrors == 0) {
+
         db.createNewBlogpost(title, content, description, function (error) {
             if (error) {
                 //Do something
@@ -99,7 +99,7 @@ router.post("/create-blogpost", function (request, response) {
                 response.redirect("/blogs")
             }
         })
-    }else{
+    } else {
         model = {
             validationErrors,
             title,
@@ -155,7 +155,6 @@ router.post("/update-blogpost/:id", function (request, response) {
             console.log(error)
         }
         else {
-            )
             response.redirect("/blogs/" + id)
         }
     })
