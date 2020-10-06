@@ -12,6 +12,33 @@ router.use(bodyParser.urlencoded({
     extended: false
 }))
 
+function blogValidationErrorCheck(title,content,description) {
+    const validationErrors = []
+
+    //Validation error checks-------------------
+    if (title.length <= 0) {
+        validationErrors.push("Title is too short, please write a title!")
+    }
+    else if (title.length > TITLE_MAX_LENGTH) {
+        validationErrors.push("Title can only be " + TITLE_MAX_LENGTH + " characters long, please shorten the title!")
+    }
+    if (content.length <= 0) {
+        validationErrors.push("Content is too short, please write some content!")
+    } 
+    else if (content.length > CONTENT_MAX_LENGTH) {
+        validationErrors.push("Content can only be " + CONTENT_MAX_LENGTH + " characters, please shorten the content!")
+    }
+    if (description.length <= 0) {
+        validationErrors.push("Description is too short, please write a description!")
+    }
+    else if (description.length > DESCRIPTION_MAX_LENGTH) {
+        validationErrors.push("Description can only be " + DESCRIPTION_MAX_LENGTH + " charcaters, please shorten the description!")
+    }
+
+    return validationErrors
+
+}
+
 //GET all blogposts
 router.get("/", function (request, response) {
     db.getAllBlogs(function (error, blogposts) {
@@ -41,7 +68,7 @@ router.get("/update-blogpost/:id", function (request, response) {
     })
 })
 
-//CREATE new blogpost
+//GET CREATE new blogpost
 router.get("/create-blogpost", function (request, response) {
     model = {
         validationErrors: []
@@ -49,32 +76,14 @@ router.get("/create-blogpost", function (request, response) {
     response.render("create-blogpost.hbs")
 })
 
+
+//POST CREATE new blogpost
 router.post("/create-blogpost", function (request, response) {
     const title = request.body.title
     const content = request.body.content
     const description = request.body.description
 
-    const validationErrors = []
-
-    //Validation error checks-------------------
-    if (title.length <= 0) {
-        validationErrors.push("Title is too short, please write a title!")
-    }
-    else if (title.length > TITLE_MAX_LENGTH) {
-        validationErrors.push("Title can only be " + TITLE_MAX_LENGTH + " characters long, please shorten the title!")
-    }
-    if (content.length <= 0) {
-        validationErrors.push("Content is too short, please write some content!")
-    } 
-    else if (content.length > CONTENT_MAX_LENGTH) {
-        validationErrors.push("Content can only be " + CONTENT_MAX_LENGTH + " characters, please shorten the content!")
-    }
-    if (description.length <= 0) {
-        validationErrors.push("Description is too short, please write a description!")
-    }
-    else if (description.length > DESCRIPTION_MAX_LENGTH) {
-        validationErrors.push("Description can only be " + DESCRIPTION_MAX_LENGTH + " charcaters, please shorten the description!")
-    }
+   const validationErrors = blogValidationErrorCheck(title,content,description)
 
     if(validationErrors == 0) {
         //----------------------------------
