@@ -64,8 +64,10 @@ router.get("/update-blogpost/:id", function (request, response) {
             console.log(error)
         }
         else {
-
-            const model = blogpost
+            const model = {
+                blogpost,
+                validationErrors: []
+            }
             response.render("update-blogpost.hbs", model)
         }
     })
@@ -150,14 +152,29 @@ router.post("/update-blogpost/:id", function (request, response) {
     const title = request.body.title
     const content = request.body.content
     const description = request.body.description
-    db.updateBlogpost(id, title, content, description, function (error) {
-        if (error) {
-            console.log(error)
+
+    const validationErrors = blogValidationErrorCheck(title, content, description)
+
+    if (validationErrors == 0) {
+        db.updateBlogpost(id, title, content, description, function (error) {
+            if (error) {
+                console.log(error)
+            }
+            else {
+                response.redirect("/blogs/" + id)
+            }
+        })
+    }
+    else {
+        const blogpost = {title,content,description}
+        model = {
+            validationErrors,
+            blogpost
         }
-        else {
-            response.redirect("/blogs/" + id)
-        }
-    })
+        response.render("update-blogpost.hbs", model)
+    }
+
+
 })
 
 module.exports = router

@@ -8,21 +8,33 @@
     <link rel="stylesheet" type="text/css" href="../main.css">
 </head>
 
+{{#if validationErrors.length}}
+<div class="container card text-center card w-100 mt-5" style="width: 20rem;">
+    <div>Can't create blogpost because:</div>
+    <ul>
+        {{#each validationErrors}}
+        <li>{{this}}</li>
+        {{/each}}
+    </ul>
+</div>
+{{/if}}
+
+
 <body>
     <main class="containter mt-5 text-center mb-5">
         <form action="" method="POST" action="/blogs/update-blogpost/"{{id}}>
-            <h1>Update "{{title}}"</h1>
+            <h1>Update "{{blogpost.title}}"</h1>
             <strong>Title</strong>
             <div>
-                <input type="text" name="title" value="{{title}}">
+                <input type="text" name="title" value="{{blogpost.title}}">
             </div>
             <div class="mt-3"><strong>Content</strong> </div>
             <div>
-                <textarea name="content" cols="100" rows="15">{{content}}</textarea>
+                <textarea name="content" cols="100" rows="15">{{blogpost.content}}</textarea>
             </div>
             <div class="mt-3"><strong>Description</strong></div>
             <div>
-                <textarea name="description" cols="100" rows="5">{{description}}</textarea>
+                <textarea name="description" cols="100" rows="5">{{blogpost.description}}</textarea>
             </div>
             <input class="mt-2" type="submit" value="Update Blogpost">
         </form>
