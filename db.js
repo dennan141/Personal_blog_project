@@ -114,6 +114,13 @@ exports.deleteProject = function (id, callback) {
                 callback(error)
         })
 }
+exports.updateProject = function (id, title, content, description, callback) {
+        const query = "UPDATE portfolio SET title = ?, content = ?, description = ? WHERE id = ?"
+        const values = [title, content, description, id]
+        db.run(query, values, function (error) {
+                callback(error)
+        })
+}
 
 //Guest blogs
 exports.getAllGuestBlogs = function (callback) {
