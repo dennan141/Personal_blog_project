@@ -159,18 +159,33 @@ router.post("/delete-guestblog/:id", function (request, response) {
 //POST UPDATE spec guest blogpost
 router.post("/update-guestblog/:id", function (request, response) {
     const id = request.params.id
-    const title = request.body.title
-    const content = request.body.content
-    const description = request.body.description
-    const name = request.body.name
-    db.updateGuestblogpost(id, title, content, description, name, function (error) {
-        if (error) {
-            console.log(error)
+    const guest_title = request.body.title
+    const guest_content = request.body.content
+    const guest_description = request.body.description
+    const guest_name = request.body.name
+
+    const validationErrors = guestblogValidationErrorCheck(guest_title, guest_content, guest_description, guest_name)
+
+    if (validationErrors == 0) {
+        db.updateGuestblogpost(id, guest_title, guest_content, guest_description, guest_name, function (error) {
+            if (error) {
+                console.log(error)
+            }
+            else {
+                response.redirect("/guestblog/" + id)
+            }
+        })
+    }
+    else {
+        const guestblog = {guest_title, guest_content, guest_description, guest_name}
+        model = {
+            guestblog,
+            validationErrors
         }
-        else {
-            response.redirect("/guestblog/" + id)
-        }
-    })
+        response.render("update-guestblog.hbs", model)
+    }
+
+
 })
 
 module.exports = router
