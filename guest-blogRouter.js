@@ -66,13 +66,17 @@ router.get("/", function (request, response) {
 //GET UPDATE guestblog with id
 router.get("/update-guestblog/:id", function (request, response) {
     const id = request.params.id
-    db.getGuestBlogById(id, function (error, guestblogpost) {
+    db.getGuestBlogById(id, function (error, guestblogposts) {
         if (error) {
             //Do something
             console.log(error)
         }
         else {
-            const model = guestblogpost
+            console.log(guestblogposts)
+            const model = {
+                guestblogposts,
+                validationErrors: []
+            }
 
             response.render("update-guestblog.hbs", model)
         }
@@ -177,15 +181,13 @@ router.post("/update-guestblog/:id", function (request, response) {
         })
     }
     else {
-        const guestblog = {guest_title, guest_content, guest_description, guest_name}
+        const guestblogposts = { guest_title, guest_content, guest_description, guest_name }
         model = {
-            guestblog,
+            guestblogposts,
             validationErrors
         }
         response.render("update-guestblog.hbs", model)
     }
-
-
 })
 
 module.exports = router
