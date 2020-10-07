@@ -12,12 +12,17 @@ const blogRouter = require("./blogRouter")
 const portfolioRouter = require("./portfolioRouter")
 
 const app = express()
-const username = "username"
-const password = "123"
+const adminUsername = "admin"
+const adminPassword = "123"
+
+app.use(expressSession({
+    secret: "asdfghjkl",
+    saveUninitialized: false,
+    resave: false    
+}))
 
 
 app.use(express.static(__dirname + "/public"))
-
 app.use(bodyParser.urlencoded({
     extended: false
 }))
@@ -25,6 +30,8 @@ app.engine("hbs", expressHandlebars({
     defaultLayout: 'main.hbs'
 }))
 
+
+//-----------------------
 
 app.use('/blogs', blogRouter)
 app.use("/guestblog", guestBlogRouter)
@@ -42,6 +49,25 @@ app.get('/about', function (request, response) {
 
 app.get('/contact', function (request, response) {
     response.render('contact.hbs')
+})
+
+app.get("/login", function(request, response){
+response.render("login.hbs")
+})
+
+app.post("/login", function(request, response){
+    const enteredUsername = request.body.username
+    const enteredPassword = request.body.password
+
+    if (enteredUsername == adminUsername && enteredPassword == adminPassword) {
+        request.session.isLoggedIn = true
+        response.redirect("/")
+    }
+    else{
+        //Display error message same as validation error i think
+        response.redirect("/blogs")
+    }
+
 })
 
 
