@@ -106,16 +106,28 @@ router.post("/create-project", function (request, response) {
     const content = request.body.content
     const description = request.body.description
 
-    db.createNewProject(title, content, description, function (error) {
-        if (error) {
-            //Do something
-            console.log(error)
-        }
-        else {
-            response.redirect("/portfolio")
-        }
-    })
+    const validationErrors = projectValidationErrorCheck(title, content, description)
 
+    if (validationErrors == 0) {
+        db.createNewProject(title, content, description, function (error) {
+            if (error) {
+                //Do something
+                console.log(error)
+            }
+            else {
+                response.redirect("/portfolio")
+            }
+        })
+    }
+
+    else {
+        const project = { title, content, description }
+        model = {
+            validationErrors,
+            project
+        }
+        response.render("create-project.hbs", model)
+    }
 })
 
 //POST DELETE spec project
