@@ -36,11 +36,21 @@ app.engine("hbs", expressHandlebars({
 app.use('/blogs', blogRouter)
 app.use("/guestblog", guestBlogRouter)
 app.use("/portfolio", portfolioRouter)
-
+app.use(function(request, response, next){
+    const isLoggedIn = request.session.isLoggedIn
+    response.locals.isLoggedIn = isLoggedIn
+    next()
+})
 
 
 app.get('/', function (request, response) {
-    response.render('home.hbs')
+
+    const isLoggedIn = request.session.isLoggedIn
+
+    const model = {
+        isLoggedIn
+    }
+    response.render('home.hbs',model)
 })
 
 app.get('/about', function (request, response) {
@@ -68,6 +78,12 @@ app.post("/login", function(request, response){
         response.redirect("/blogs")
     }
 
+})
+
+app.post("/logout", function (request, response){
+    request.session.isLoggedIn = false
+    //BETTER WAY TO DISPLAY LOG OUT?
+    response.redirect("/")
 })
 
 

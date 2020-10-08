@@ -85,7 +85,7 @@ router.get("/update-guestblog/:id", function (request, response) {
 
 //GET CREATE new guestblog
 router.get("/create-blogpost", function (request, response) {
-    model = {
+    const model = {
         validationErrors: []
     }
     response.render("create-guestBlogpost.hbs", model)
@@ -132,7 +132,7 @@ router.post("/create-guestblogpost", function (request, response) {
         })
     }
     else {
-        model = {
+        const model = {
             validationErrors,
             title,
             content,
@@ -182,7 +182,7 @@ router.post("/update-guestblog/:id", function (request, response) {
     }
     else {
         const guestblogposts = { guest_title, guest_content, guest_description, guest_name }
-        model = {
+        const model = {
             guestblogposts,
             validationErrors
         }
