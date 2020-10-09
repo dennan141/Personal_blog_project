@@ -18,6 +18,8 @@
         </div>
 
     </main>
+
+    {{#if isLoggedIn}}
     <footer class="container mb-5">
         <div class="text-center">Will be hidden later</div>
         <form action="/portfolio/delete-project/{{portfolio.id}}" method="POST">
@@ -27,6 +29,7 @@
             <button type="submit" class="btn btn-info">Update</button>
         </form>
     </footer>
+    {{/if}}
 </body>
 
 </html>

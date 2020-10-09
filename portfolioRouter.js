@@ -45,12 +45,16 @@ function projectValidationErrorCheck(title, content, description) {
 
 //GET whole portfolio
 router.get('/', function (request, response) {
+
+    const isLoggedIn = request.session.isLoggedIn
+
     db.getAllProjects(function (error, portfolio) {
         if (error) {
             console.log(error);
         } else {
             const model = {
-                portfolio
+                portfolio,
+                isLoggedIn
             }
             response.render('portfolio.hbs', model)
         }
@@ -60,45 +64,64 @@ router.get('/', function (request, response) {
 //GET UPDATE project
 router.get("/update-project/:id", function (request, response) {
     const id = request.params.id
+    const isLoggedIn = request.session.isLoggedIn
 
-    db.getProjectById(id, function (error, project) {
-        if (error) {
-            //Do something
-            console.log(error)
-        }
-        else {
-            const model = {
-                project,
-                validationErrors: []
+    if (isLoggedIn) {
+        db.getProjectById(id, function (error, project) {
+            if (error) {
+                //Do something
+                console.log(error)
             }
-            response.render("update-project.hbs", model)
-        }
-    })
+            else {
+                const model = {
+                    project,
+                    validationErrors: [],
+                    isLoggedIn
+                }
+                response.render("update-project.hbs", model)
+            }
+        })
+    }
+    else {
+        response.redirect("/login")
+    }
+
 })
 
 //GET CREATE project
 router.get("/create-project", function (request, response) {
-    response.render("create-project.hbs")
+
+    const isLoggedIn = request.session.isLoggedIn
+
+    if (isLoggedIn) {
+        model = {
+            isLoggedIn
+        }
+        response.render("create-project.hbs", model)
+    }
+    else {
+        response.redirect("/login")
+    }
 })
 
-
-//GET spec project
+//GET specific project
 router.get('/:id', function (request, response) {
     const id = request.params.id
+    const isLoggedIn = request.session.isLoggedIn
 
-    const blog = db.getProjectById(id, function (error, portfolio) {
+    db.getProjectById(id, function (error, portfolio) {
         if (error) {
             //Do something
         }
         else {
             const model = {
-                portfolio
+                portfolio,
+                isLoggedIn
             }
             response.render("project.hbs", model)
         }
     })
 })
-
 
 //POST CREATE new project
 router.post("/create-project", function (request, response) {
@@ -107,11 +130,44 @@ router.post("/create-project", function (request, response) {
     const description = request.body.description
 
     const validationErrors = projectValidationErrorCheck(title, content, description)
+    const isLoggedIn = request.session.isLoggedIn
 
-    if (validationErrors == 0) {
-        db.createNewProject(title, content, description, function (error) {
+    if (isLoggedIn) {
+        if (validationErrors == 0) {
+            db.createNewProject(title, content, description, function (error) {
+                if (error) {
+                    //Do something
+                    console.log(error)
+                }
+                else {
+                    response.redirect("/portfolio")
+                }
+            })
+        }
+
+        else {
+            const project = { title, content, description }
+            model = {
+                validationErrors,
+                project,
+                isLoggedIn
+            }
+            response.render("create-project.hbs", model)
+        }
+    }
+    else {
+        response.redirect("/login")
+    }
+})
+
+//POST DELETE specific project
+router.post("/delete-project/:id", function (request, response) {
+    const id = request.params.id
+    const isLoggedIn = request.session.isLoggedIn
+
+    if (isLoggedIn) {
+        db.deleteProject(id, function (error) {
             if (error) {
-                //Do something
                 console.log(error)
             }
             else {
@@ -119,32 +175,12 @@ router.post("/create-project", function (request, response) {
             }
         })
     }
-
     else {
-        const project = { title, content, description }
-        model = {
-            validationErrors,
-            project
-        }
-        response.render("create-project.hbs", model)
+        response.redirect("/login")
     }
 })
 
-//POST DELETE spec project
-router.post("/delete-project/:id", function (request, response) {
-    const id = request.params.id
-
-    db.deleteProject(id, function (error) {
-        if (error) {
-            console.log(error)
-        }
-        else {
-            response.redirect("/portfolio")
-        }
-    })
-})
-
-//POST UPDATE spec project
+//POST UPDATE specific project
 router.post("/update-project/:id", function (request, response) {
     const id = request.params.id
     const title = request.body.title
@@ -152,28 +188,31 @@ router.post("/update-project/:id", function (request, response) {
     const description = request.body.description
 
     const validationErrors = projectValidationErrorCheck(title, content, description)
+    const isLoggedIn = request.session.isLoggedIn
 
-    if (validationErrors == 0) {
-        db.updateProject(id, title, content, description, function (error) {
-            if (error) {
-
-                console.log(error)
+    if (isLoggedIn) {
+        if (validationErrors == 0) {
+            db.updateProject(id, title, content, description, function (error) {
+                if (error) {
+                    console.log(error)
+                }
+                else {
+                    response.redirect("/portfolio/" + id)
+                }
+            })
+        }
+        else {
+            const project = { title, content, description }
+            model = {
+                validationErrors,
+                project
             }
-            else {
-                response.redirect("/portfolio/" + id)
-            }
-        })
+            response.render("update-project.hbs", model)
+        }
     }
     else {
-        const project = { title, content, description }
-        model = {
-            validationErrors,
-            project
-        }
-        response.render("update-project.hbs", model)
+        response.redirect("/login")
     }
-
-
 })
 
 
