@@ -51,12 +51,14 @@ function guestblogValidationErrorCheck(title, content, description, name) {
 
 //GET all guest blogposts
 router.get("/", function (request, response) {
+    const isLoggedIn = request.session.isLoggedIn
     db.getAllGuestBlogs(function (error, guestblogposts) {
         if (error) {
             console.log(error);
         } else {
             const model = {
-                guestblogposts
+                guestblogposts,
+                isLoggedIn
             }
             response.render('guestBlogs.hbs', model)
         }
@@ -66,6 +68,7 @@ router.get("/", function (request, response) {
 //GET UPDATE guestblog with id
 router.get("/update-guestblog/:id", function (request, response) {
     const id = request.params.id
+    const isLoggedIn = request.session.isLoggedIn
     db.getGuestBlogById(id, function (error, guestblogposts) {
         if (error) {
             //Do something
@@ -75,7 +78,8 @@ router.get("/update-guestblog/:id", function (request, response) {
             console.log(guestblogposts)
             const model = {
                 guestblogposts,
-                validationErrors: []
+                validationErrors: [],
+                isLoggedIn
             }
 
             response.render("update-guestblog.hbs", model)
@@ -85,8 +89,10 @@ router.get("/update-guestblog/:id", function (request, response) {
 
 //GET CREATE new guestblog
 router.get("/create-blogpost", function (request, response) {
+    const isLoggedIn = request.session.isLoggedIn
     const model = {
-        validationErrors: []
+        validationErrors: [],
+        isLoggedIn
     }
     response.render("create-guestBlogpost.hbs", model)
 })
@@ -95,7 +101,7 @@ router.get("/create-blogpost", function (request, response) {
 //GET spec guest Blogposts
 router.get('/:id', function (request, response) {
     const id = request.params.id
-
+    const isLoggedIn = request.session.isLoggedIn
     const blog = db.getGuestBlogById(id, function (error, guestblogposts) {
         if (error) {
             //Do something
@@ -103,7 +109,8 @@ router.get('/:id', function (request, response) {
         }
         else {
             const model = {
-                guestblogposts
+                guestblogposts,
+                isLoggedIn
             }
 
             response.render("guestBlog.hbs", model)

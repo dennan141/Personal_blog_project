@@ -9,7 +9,7 @@
 
 <body>
 
-    <main class="container text-center mt-5 mb-5" >
+    <main class="container text-center mt-5 mb-5">
         <div class="container mt-5">
             <div class="card text-center card w-100" style="width: 20rem;">
                 <h1 class="text-center ml-5 mr-5">{{blogposts.title}}</h1>
@@ -18,21 +18,21 @@
         </div>
     </main>
 
-
+    {{#if isLoggedIn}}
     <footer class="container mb-5">
-        <div class="text-center">Will be hidden later</div>
         <div>
             <form action="/blogs/delete-blogpost/{{blogposts.id}}" method="POST">
-                <button type="submit" class="btn btn-danger">Delete</button>
+                <button type="submit" class="btn btn-danger" style="width: 10rem;">Delete</button>
             </form>
         </div>
         <div>
             <form action="/blogs/update-blogpost/{{blogposts.id}}" method="GET">
-                <button type="submit" class="btn btn-info">Update</button>
+                <button type="submit" class="btn btn-info" style="width: 10rem;">Update</button>
             </form>
         </div>
-
     </footer>
+    {{/if}}
+    
 </body>
 
 </html>

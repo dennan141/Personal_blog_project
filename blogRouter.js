@@ -42,11 +42,13 @@ function blogValidationErrorCheck(title, content, description) {
 
 //GET all blogposts
 router.get("/", function (request, response) {
+    const isLoggedIn = request.session.isLoggedIn
     db.getAllBlogs(function (error, blogposts) {
         if (error) {
             console.log(error);
         } else {
             const model = {
+                isLoggedIn,
                 blogposts
             }
             response.render('blogs.hbs', model)
@@ -56,29 +58,46 @@ router.get("/", function (request, response) {
 
 //GET UPDATE blogpost
 router.get("/update-blogpost/:id", function (request, response) {
-    const id = request.params.id
 
-    db.getBlogById(id, function (error, blogpost) {
-        if (error) {
-            //Do something
-            console.log(error)
-        }
-        else {
-            const model = {
-                blogpost,
-                validationErrors: []
+    const id = request.params.id
+    const isLoggedIn = request.session.isLoggedIn
+
+    if (isLoggedIn) {
+        db.getBlogById(id, function (error, blogpost) {
+            if (error) {
+                //Do something
+                console.log(error)
             }
-            response.render("update-blogpost.hbs", model)
-        }
-    })
+            else {
+                const model = {
+                    blogpost,
+                    errors: []
+                }
+                response.render("update-blogpost.hbs", model)
+            }
+        })
+    }
+    else {
+        response.redirect("/login")
+    }
 })
 
 //GET CREATE new blogpost
 router.get("/create-blogpost", function (request, response) {
-    model = {
-        validationErrors: []
+
+    const isLoggedIn = request.session.isLoggedIn
+
+    if (isLoggedIn) {
+        model = {
+            errors: [],
+            isLoggedIn
+        }
+        response.render("create-blogpost.hbs", model)
     }
-    response.render("create-blogpost.hbs")
+
+    else {
+        response.redirect("/login")
+    }
 })
 
 
@@ -88,9 +107,14 @@ router.post("/create-blogpost", function (request, response) {
     const content = request.body.content
     const description = request.body.description
 
-    const validationErrors = blogValidationErrorCheck(title, content, description)
+    const errors = blogValidationErrorCheck(title, content, description)
+    const isLoggedIn = request.session.isLoggedIn
 
-    if (validationErrors == 0) {
+    if (!isLoggedIn) {
+        errors.push("You must be logged in!")
+    }
+
+    if (errors == 0) {
 
         db.createNewBlogpost(title, content, description, function (error) {
             if (error) {
@@ -101,14 +125,9 @@ router.post("/create-blogpost", function (request, response) {
                 response.redirect("/blogs")
             }
         })
-    } else {
-        model = {
-            validationErrors,
-            title,
-            content,
-            description
-        }
-        response.render("create-blogpost.hbs", model)
+    }
+    else {
+        response.redirect("/login")
     }
 })
 
@@ -116,7 +135,7 @@ router.post("/create-blogpost", function (request, response) {
 //GET spec Blogposts
 router.get('/:id', function (request, response) {
     const id = request.params.id
-
+    const isLoggedIn = request.session.isLoggedIn
     const blog = db.getBlogById(id, function (error, blogposts) {
         if (error) {
             //Do something
@@ -124,7 +143,8 @@ router.get('/:id', function (request, response) {
         }
         else {
             const model = {
-                blogposts
+                blogposts,
+                isLoggedIn
             }
             response.render("blog.hbs", model)
         }
@@ -135,15 +155,23 @@ router.get('/:id', function (request, response) {
 //POST DELETE spec blogpost
 router.post("/delete-blogpost/:id", function (request, response) {
     const id = request.params.id
+    const isLoggedIn = request.session.isLoggedIn
 
-    db.deleteBlogpost(id, function (error) {
-        if (error) {
-            console.log(error)
-        }
-        else {
-            response.redirect("/blogs")
-        }
-    })
+    if (isLoggedIn) {
+        db.deleteBlogpost(id, function (error) {
+            if (error) {
+                console.log(error)
+            }
+            else {
+                response.redirect("/blogs")
+            }
+        })
+    }
+    else {
+        response.redirect("/login")
+    }
+
+
 })
 
 //POST UPDATE spec blogpost
@@ -153,28 +181,33 @@ router.post("/update-blogpost/:id", function (request, response) {
     const content = request.body.content
     const description = request.body.description
 
-    const validationErrors = blogValidationErrorCheck(title, content, description)
+    const errors = blogValidationErrorCheck(title, content, description)
+    const isLoggedIn = request.session.isLoggedIn
 
-    if (validationErrors == 0) {
-        db.updateBlogpost(id, title, content, description, function (error) {
-            if (error) {
-                console.log(error)
+    if (isLoggedIn) {
+        if (errors == 0) {
+            db.updateBlogpost(id, title, content, description, function (error) {
+                if (error) {
+                    console.log(error)
+                }
+                else {
+                    response.redirect("/blogs/" + id)
+                }
+            })
+        }
+
+        else {
+            const blogpost = { title, content, description }
+            model = {
+                errors,
+                blogpost
             }
-            else {
-                response.redirect("/blogs/" + id)
-            }
-        })
+            response.render("update-blogpost.hbs", model)
+        }
     }
     else {
-        const blogpost = {title,content,description}
-        model = {
-            validationErrors,
-            blogpost
-        }
-        response.render("update-blogpost.hbs", model)
+        response.redirect("/login")
     }
-
-
 })
 
 module.exports = router
