@@ -67,67 +67,74 @@ router.get("/", function (request, response) {
 
 //GET UPDATE guestblog with id
 router.get("/update-guestblog/:id", function (request, response) {
+
     const id = request.params.id
     const isLoggedIn = request.session.isLoggedIn
+
+    if (isLoggedIn) {
+        db.getGuestBlogById(id, function (error, guestblogposts) {
+            if (error) {
+                //Do something
+                console.log(error)
+            }
+            else {
+                console.log(guestblogposts)
+                const model = {
+                    guestblogposts,
+                    errors: [],
+                    isLoggedIn
+                }
+                response.render("update-guestblog.hbs", model)
+            }
+        })
+    }
+})
+
+//GET CREATE new guestblog
+router.get("/create-blogpost", function (request, response) {
+
+    const isLoggedIn = request.session.isLoggedIn
+
+        const model = {
+            errors: [],
+            isLoggedIn
+        }
+        response.render("create-guestBlogpost.hbs", model)
+})
+
+
+//GET spec guest Blogposts
+router.get('/:id', function (request, response) {
+
+    const id = request.params.id
+    const isLoggedIn = request.session.isLoggedIn
+
     db.getGuestBlogById(id, function (error, guestblogposts) {
         if (error) {
             //Do something
             console.log(error)
         }
         else {
-            console.log(guestblogposts)
-            const model = {
-                guestblogposts,
-                validationErrors: [],
-                isLoggedIn
-            }
-
-            response.render("update-guestblog.hbs", model)
-        }
-    })
-})
-
-//GET CREATE new guestblog
-router.get("/create-blogpost", function (request, response) {
-    const isLoggedIn = request.session.isLoggedIn
-    const model = {
-        validationErrors: [],
-        isLoggedIn
-    }
-    response.render("create-guestBlogpost.hbs", model)
-})
-
-
-//GET spec guest Blogposts
-router.get('/:id', function (request, response) {
-    const id = request.params.id
-    const isLoggedIn = request.session.isLoggedIn
-    const blog = db.getGuestBlogById(id, function (error, guestblogposts) {
-        if (error) {
-            //Do something
-            console.log(error)
-        }
-        else {
             const model = {
                 guestblogposts,
                 isLoggedIn
             }
-
             response.render("guestBlog.hbs", model)
         }
     })
 })
 
-//CREATE new guest_blogpost
+//POST CREATE new guest_blogpost
 router.post("/create-guestblogpost", function (request, response) {
     const title = request.body.title
     const content = request.body.content
     const description = request.body.description
     const name = request.body.name
 
-    const validationErrors = guestblogValidationErrorCheck(title, content, description, name)
+    const errors = guestblogValidationErrorCheck(title, content, description, name)
+    const isLoggedIn = request.session.isLoggedIn
 
-    if (validationErrors == 0) {
+    if (errors == 0) {
         db.createNewGuestBlogpost(title, content, description, name, function (error) {
             if (error) {
                 //Do something
@@ -140,31 +147,36 @@ router.post("/create-guestblogpost", function (request, response) {
     }
     else {
         const model = {
-            validationErrors,
+            isLoggedIn,
+            errors,
             title,
             content,
             description,
             name
         }
         response.render("create-guestBlogpost.hbs", model)
-
     }
-
 
 })
 
 //POST DELETE spec guest_blogpost
 router.post("/delete-guestblog/:id", function (request, response) {
     const id = request.params.id
+    const isLoggedIn = request.session.isLoggedIn
 
-    db.deleteGuestBlogpost(id, function (error) {
-        if (error) {
-            console.log(error)
-        }
-        else {
-            response.redirect("/guestblog")
-        }
-    })
+    if (isLoggedIn) {
+        db.deleteGuestBlogpost(id, function (error) {
+            if (error) {
+                console.log(error)
+            }
+            else {
+                response.redirect("/guestblog")
+            }
+        })
+    }
+    else {
+        response.redirect("/login")
+    }
 })
 
 //POST UPDATE spec guest blogpost
@@ -175,25 +187,31 @@ router.post("/update-guestblog/:id", function (request, response) {
     const guest_description = request.body.description
     const guest_name = request.body.name
 
-    const validationErrors = guestblogValidationErrorCheck(guest_title, guest_content, guest_description, guest_name)
+    const errors = guestblogValidationErrorCheck(guest_title, guest_content, guest_description, guest_name)
+    const isLoggedIn = request.session.isLoggedIn
 
-    if (validationErrors == 0) {
-        db.updateGuestblogpost(id, guest_title, guest_content, guest_description, guest_name, function (error) {
-            if (error) {
-                console.log(error)
+    if (isLoggedIn) {
+        if (errors == 0) {
+            db.updateGuestblogpost(id, guest_title, guest_content, guest_description, guest_name, function (error) {
+                if (error) {
+                    console.log(error)
+                }
+                else {
+                    response.redirect("/guestblog/" + id)
+                }
+            })
+        }
+        else {
+            const guestblogposts = { guest_title, guest_content, guest_description, guest_name }
+            const model = {
+                guestblogposts,
+                errors
             }
-            else {
-                response.redirect("/guestblog/" + id)
-            }
-        })
+            response.render("update-guestblog.hbs", model)
+        }
     }
     else {
-        const guestblogposts = { guest_title, guest_content, guest_description, guest_name }
-        const model = {
-            guestblogposts,
-            validationErrors
-        }
-        response.render("update-guestblog.hbs", model)
+        response.redirect("/login")
     }
 })
 
