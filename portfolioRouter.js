@@ -42,7 +42,6 @@ function projectValidationErrorCheck(title, content, description) {
 
 }
 
-
 //GET whole portfolio
 router.get('/', function (request, response) {
 

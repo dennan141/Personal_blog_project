@@ -16,7 +16,6 @@ router.use(bodyParser.urlencoded({
 function blogValidationErrorCheck(title, content, description) {
     const validationErrors = []
 
-
     if (title.length <= 0) {
         validationErrors.push("Title is too short, please write a title!")
     }
@@ -35,9 +34,7 @@ function blogValidationErrorCheck(title, content, description) {
     else if (description.length > DESCRIPTION_MAX_LENGTH) {
         validationErrors.push("Description can only be " + DESCRIPTION_MAX_LENGTH + " charcaters, please shorten the description!")
     }
-
     return validationErrors
-
 }
 
 //GET all blogposts
