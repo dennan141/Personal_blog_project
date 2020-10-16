@@ -13,7 +13,7 @@ const portfolioRouter = require("./portfolioRouter")
 
 
 //USERNAME AND PASSWORD: Password is left un-hashed below to makes it more convenient for Peter.
-//the below const "adminPassword will not be stored here after i've passed the course"
+//the below const "adminPassword" will not be stored here after i've passed the course"
 const app = express()
 const adminUsername = "admin"
 const adminPassword = "123"
