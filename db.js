@@ -28,7 +28,8 @@ db.run(`
                 projId INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT,
                 content TEXT,
-                description TEXT
+                description TEXT,
+                link TEXT
         )
 `)
 
@@ -80,7 +81,7 @@ exports.deleteBlogpost = function (id, callback) {
 
 //Portfolio
 exports.getAllProjects = function (callback) {
-        const query = "SELECT * from portfolio ORDER BY id DESC"
+        const query = "SELECT * from portfolio ORDER BY projId DESC"
 
         db.all(query, function (error, portfolio) {
                 callback(error, portfolio)
@@ -89,7 +90,7 @@ exports.getAllProjects = function (callback) {
 
 
 exports.getProjectById = function (id, callback) {
-        const query = "SELECT * FROM portfolio WHERE id = ?"
+        const query = "SELECT * FROM portfolio WHERE projId = ?"
         const values = [id]
 
         db.get(query, values, function (error, portfolio) {
@@ -97,9 +98,9 @@ exports.getProjectById = function (id, callback) {
         })
 }
 
-exports.createNewProject = function (title, content, description, callback) {
-        const query = "INSERT INTO portfolio (title, content, description) VALUES (?,?,?)"
-        const values = [title, content, description]
+exports.createNewProject = function (title, content, description, link, callback) {
+        const query = "INSERT INTO portfolio (title, content, description, link) VALUES (?,?,?,?)"
+        const values = [title, content, description, link]
 
         db.run(query, values, function (error) {
                 callback(error)
@@ -107,16 +108,16 @@ exports.createNewProject = function (title, content, description, callback) {
 }
 
 exports.deleteProject = function (id, callback) {
-        const query = "DELETE FROM portfolio WHERE id = ?"
+        const query = "DELETE FROM portfolio WHERE projId = ?"
         const values = [id]
 
         db.run(query, values, function (error) {
                 callback(error)
         })
 }
-exports.updateProject = function (id, title, content, description, callback) {
-        const query = "UPDATE portfolio SET title = ?, content = ?, description = ? WHERE id = ?"
-        const values = [title, content, description, id]
+exports.updateProject = function (id, title, content, description, link, callback) {
+        const query = "UPDATE portfolio SET title = ?, content = ?, description = ?, link = ? WHERE id = ?"
+        const values = [title, content, description, link, id]
         db.run(query, values, function (error) {
                 callback(error)
         })

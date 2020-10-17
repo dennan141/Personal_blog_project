@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const TITLE_MAX_LENGTH = 100
 const CONTENT_MAX_LENGTH = 4000
 const DESCRIPTION_MAX_LENGTH = 500
+const LINK_MAX_LENGTH = 200
 
 router.use(express.static(__dirname + "/public"))
 router.use(bodyParser.urlencoded({
@@ -15,7 +16,7 @@ router.use(bodyParser.urlencoded({
 
 
 //Validation error checks-------------------
-function projectValidationErrorCheck(title, content, description) {
+function projectValidationErrorCheck(title, content, description, link) {
     const validationErrors = []
 
 
@@ -36,6 +37,12 @@ function projectValidationErrorCheck(title, content, description) {
     }
     else if (description.length > DESCRIPTION_MAX_LENGTH) {
         validationErrors.push("Description can only be " + DESCRIPTION_MAX_LENGTH + " charcaters, please shorten the description!")
+    }
+    if (link.length <= 0) {
+        validationErrors.push("Link is too short, please write a link!")
+    }
+    else if (link.length > LINK_MAX_LENGTH) {
+        validationErrors.push("Link can only be " + LINK_MAX_LENGTH + " characters, please write a link.")
     }
 
     return validationErrors
@@ -127,13 +134,14 @@ router.post("/create-project", function (request, response) {
     const title = request.body.title
     const content = request.body.content
     const description = request.body.description
+    const link = request.body.link
 
-    const validationErrors = projectValidationErrorCheck(title, content, description)
+    const validationErrors = projectValidationErrorCheck(title, content, description, link)
     const isLoggedIn = request.session.isLoggedIn
 
     if (isLoggedIn) {
         if (validationErrors == 0) {
-            db.createNewProject(title, content, description, function (error) {
+            db.createNewProject(title,content,description,link, function(error){
                 if (error) {
                     //Do something
                     console.log(error)
@@ -143,9 +151,8 @@ router.post("/create-project", function (request, response) {
                 }
             })
         }
-
         else {
-            const project = { title, content, description }
+            const project = { title, content, description, link }
             model = {
                 validationErrors,
                 project,
@@ -185,13 +192,14 @@ router.post("/update-project/:id", function (request, response) {
     const title = request.body.title
     const content = request.body.content
     const description = request.body.description
+    const link = request.body.link
 
-    const validationErrors = projectValidationErrorCheck(title, content, description)
+    const validationErrors = projectValidationErrorCheck(title, content, description, link)
     const isLoggedIn = request.session.isLoggedIn
 
     if (isLoggedIn) {
         if (validationErrors == 0) {
-            db.updateProject(id, title, content, description, function (error) {
+            db.updateProject(id, title, content, description, link, function (error) {
                 if (error) {
                     console.log(error)
                 }
@@ -201,7 +209,7 @@ router.post("/update-project/:id", function (request, response) {
             })
         }
         else {
-            const project = { title, content, description }
+            const project = { title, content, description, link }
             model = {
                 validationErrors,
                 project
