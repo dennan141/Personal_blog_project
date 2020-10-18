@@ -53,6 +53,7 @@ router.get("/", function (request, response) {
     })
 })
 
+
 //GET UPDATE blogpost
 router.get("/update-blogpost/:id", function (request, response) {
 
@@ -78,6 +79,7 @@ router.get("/update-blogpost/:id", function (request, response) {
         response.redirect("/login")
     }
 })
+
 
 //GET CREATE new blogpost
 router.get("/create-blogpost", function (request, response) {
@@ -170,6 +172,7 @@ router.post("/delete-blogpost/:id", function (request, response) {
 
 
 })
+
 
 //POST UPDATE spec blogpost
 router.post("/update-blogpost/:id", function (request, response) {

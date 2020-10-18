@@ -2,21 +2,19 @@
 const express = require('express')
 const expressHandlebars = require('express-handlebars')
 const bodyParser = require('body-parser')
-const cookieParser = require('cookie-parser')
 const expressSession = require('express-session')
-const SQLiteStore = require('connect-sqlite3')(expressSession)
 const bcrypt = require("bcrypt")
+const sqlite3 = require('sqlite3')
 //------------------------
 const guestBlogRouter = require("./guest-blogRouter")
 const blogRouter = require("./blogRouter")
 const portfolioRouter = require("./portfolioRouter")
 
 
-//USERNAME AND PASSWORD: Password is left un-hashed below to makes it more convenient for Peter.
-//the below const "adminPassword" will not be stored here after i've passed the course"
+
 const app = express()
+//USERNAME AND PASSWORD: 
 const adminUsername = "admin"
-const adminPassword = "123"
 const hashedPassword = "$2b$10$LsSSRrmcE5j4BHhUhEjcj.Y9AI0WKoLVDLQ5wLydkb270dT6MzxdO"
 
 
