@@ -53,7 +53,6 @@ router.get("/", function (request, response) {
     })
 })
 
-
 //GET UPDATE blogpost
 router.get("/update-blogpost/:id", function (request, response) {
 
@@ -80,7 +79,6 @@ router.get("/update-blogpost/:id", function (request, response) {
     }
 })
 
-
 //GET CREATE new blogpost
 router.get("/create-blogpost", function (request, response) {
 
@@ -98,7 +96,6 @@ router.get("/create-blogpost", function (request, response) {
         response.redirect("/login")
     }
 })
-
 
 //POST CREATE new blogpost
 router.post("/create-blogpost", function (request, response) {
@@ -130,17 +127,18 @@ router.post("/create-blogpost", function (request, response) {
     }
 })
 
-
 //GET spec Blogposts
 router.get('/:id', function (request, response) {
     const id = request.params.id
     const isLoggedIn = request.session.isLoggedIn
     const blog = db.getBlogById(id, function (error, blogposts) {
         if (error) {
-            //Do something
+            response.render("serverError.hbs")
             console.log(error)
         }
-        else {
+        else if (blogposts == null) {
+            response.render("notFound.hbs")
+        } else {
             const model = {
                 blogposts,
                 isLoggedIn
@@ -149,7 +147,6 @@ router.get('/:id', function (request, response) {
         }
     })
 })
-
 
 //POST DELETE spec blogpost
 router.post("/delete-blogpost/:id", function (request, response) {
@@ -172,7 +169,6 @@ router.post("/delete-blogpost/:id", function (request, response) {
 
 
 })
-
 
 //POST UPDATE spec blogpost
 router.post("/update-blogpost/:id", function (request, response) {

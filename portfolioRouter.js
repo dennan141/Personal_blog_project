@@ -117,7 +117,10 @@ router.get('/:id', function (request, response) {
 
     db.getProjectById(id, function (error, portfolio) {
         if (error) {
-            //Do something
+            response.render("serverError.hbs")
+        }
+        else if (portfolio == null) {
+            response.render("notFound.hbs")
         }
         else {
             const model = {

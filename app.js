@@ -47,6 +47,8 @@ function loginErrorCheck(enteredUsername, result) {
 app.use('/blogs', blogRouter)
 app.use("/guestblog", guestBlogRouter)
 app.use("/portfolio", portfolioRouter)
+
+//Session isLoggedIn
 app.use(function (request, response, next) {
     const isLoggedIn = request.session.isLoggedIn
     response.locals.isLoggedIn = isLoggedIn
@@ -108,7 +110,5 @@ app.post("/logout", function (request, response) {
     //BETTER WAY TO DISPLAY LOG OUT?
     response.redirect("/")
 })
-
-
 
 app.listen(8080)

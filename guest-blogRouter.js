@@ -102,7 +102,6 @@ router.get("/create-blogpost", function (request, response) {
         response.render("create-guestBlogpost.hbs", model)
 })
 
-
 //GET spec guest Blogposts
 router.get('/:id', function (request, response) {
 
@@ -111,8 +110,10 @@ router.get('/:id', function (request, response) {
 
     db.getGuestBlogById(id, function (error, guestblogposts) {
         if (error) {
-            //Do something
-            console.log(error)
+            response.render("serverError.hbs")
+        }
+        else if (guestblogposts == null) {
+            response.render("notFound.hbs")
         }
         else {
             const model = {
